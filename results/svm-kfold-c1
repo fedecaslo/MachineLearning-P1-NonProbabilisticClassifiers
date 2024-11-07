@@ -1,0 +1,87 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007" -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SMO
+
+Kernel used:
+  Linear Kernel: K(x,y) = <x,y>
+
+Classifier for classes: 0, 1
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.7339 * (normalized) age
+ +       2.1093 * (normalized) gender=Female
+ +       1.9033 * (normalized) polyuria=1
+ +       2.19   * (normalized) polydipsia=1
+ +       0.2686 * (normalized) sudden_weight_loss=1
+ +       0.1952 * (normalized) weakness=1
+ +       0.5486 * (normalized) polyphagia=1
+ +       0.5208 * (normalized) genital_thrush=1
+ +       0.3143 * (normalized) visual_blurring=1
+ +      -1.2735 * (normalized) itching=1
+ +       1.2894 * (normalized) irritability=1
+ +      -0.5167 * (normalized) delayed_healing=1
+ +       0.7378 * (normalized) partial_paresis=1
+ +      -0.6653 * (normalized) muscle_stiffness=1
+ +      -0.3444 * (normalized) alopecia=1
+ +      -0.0743 * (normalized) obesity=1
+ -       1.143 
+
+Number of kernel evaluations: 30244 (91.63% cached)
+
+
+
+Time taken to build model: 0.1 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         479               92.1154 %
+Incorrectly Classified Instances        41                7.8846 %
+Kappa statistic                          0.8339
+Mean absolute error                      0.0788
+Root mean squared error                  0.2808
+Relative absolute error                 16.6523 %
+Root relative squared error             57.717  %
+Total Number of Instances              520     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,905    0,069    0,892      0,905    0,898      0,834    0,918     0,843     0
+                 0,931    0,095    0,940      0,931    0,936      0,834    0,918     0,918     1
+Weighted Avg.    0,921    0,085    0,921      0,921    0,921      0,834    0,918     0,889     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 181  19 |   a = 0
+  22 298 |   b = 1
+

@@ -1,0 +1,58 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 60 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    5-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 60 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         439               84.4231 %
+Incorrectly Classified Instances        81               15.5769 %
+Kappa statistic                          0.6926
+Mean absolute error                      0.2262
+Root mean squared error                  0.3373
+Relative absolute error                 47.7656 %
+Root relative squared error             69.3313 %
+Total Number of Instances              520     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,985    0,244    0,716      0,985    0,829      0,722    0,939     0,858     0
+                 0,756    0,015    0,988      0,756    0,857      0,722    0,939     0,967     1
+Weighted Avg.    0,844    0,103    0,883      0,844    0,846      0,722    0,939     0,925     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 197   3 |   a = 0
+  78 242 |   b = 1
+

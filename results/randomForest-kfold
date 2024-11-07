@@ -1,0 +1,60 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.RandomForest -P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+RandomForest
+
+Bagging with 100 iterations and base learner
+
+weka.classifiers.trees.RandomTree -K 0 -M 1.0 -V 0.001 -S 1 -do-not-check-capabilities
+
+Time taken to build model: 0.18 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         504               96.9231 %
+Incorrectly Classified Instances        16                3.0769 %
+Kappa statistic                          0.9352
+Mean absolute error                      0.0559
+Root mean squared error                  0.1382
+Relative absolute error                 11.8028 %
+Root relative squared error             28.4084 %
+Total Number of Instances              520     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,970    0,031    0,951      0,970    0,960      0,935    0,998     0,997     0
+                 0,969    0,030    0,981      0,969    0,975      0,935    0,998     0,999     1
+Weighted Avg.    0,969    0,030    0,969      0,969    0,969      0,935    0,998     0,998     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 194   6 |   a = 0
+  10 310 |   b = 1
+

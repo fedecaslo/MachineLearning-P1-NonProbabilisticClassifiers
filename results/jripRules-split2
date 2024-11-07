@@ -1,0 +1,71 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    split 70.0% train, remainder test
+
+=== Classifier model (full training set) ===
+
+JRIP rules:
+===========
+
+(polyuria = 0) and (gender = Male) and (polydipsia = 0) and (irritability = 0) and (partial_paresis = 0) and (delayed_healing = 0) => class=0 (91.0/0.0)
+(polydipsia = 0) and (delayed_healing = 1) and (alopecia = 1) and (age >= 43) and (age <= 68) => class=0 (74.0/1.0)
+(polyuria = 0) and (gender = Male) and (itching = 1) and (muscle_stiffness = 1) and (visual_blurring = 1) => class=0 (10.0/0.0)
+(polyuria = 0) and (polyphagia = 0) and (gender = Male) and (age >= 40) and (visual_blurring = 0) and (polydipsia = 0) => class=0 (12.0/1.0)
+(age >= 70) and (sudden_weight_loss = 0) => class=0 (7.0/0.0)
+(age <= 34) and (age >= 32) and (gender = Female) => class=0 (6.0/1.0)
+ => class=1 (320.0/3.0)
+
+Number of Rules : 7
+
+
+Time taken to build model: 0.03 seconds
+
+=== Evaluation on test split ===
+
+Time taken to test model on test split: 0 seconds
+
+=== Summary ===
+
+Correctly Classified Instances         137               87.8205 %
+Incorrectly Classified Instances        19               12.1795 %
+Kappa statistic                          0.7246
+Mean absolute error                      0.1293
+Root mean squared error                  0.3454
+Relative absolute error                 27.5777 %
+Root relative squared error             72.3883 %
+Total Number of Instances              156     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,808    0,087    0,824      0,808    0,816      0,725    0,859     0,724     0
+                 0,913    0,192    0,905      0,913    0,909      0,725    0,859     0,889     1
+Weighted Avg.    0,878    0,157    0,878      0,878    0,878      0,725    0,859     0,834     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 42 10 |  a = 0
+  9 95 |  b = 1
+

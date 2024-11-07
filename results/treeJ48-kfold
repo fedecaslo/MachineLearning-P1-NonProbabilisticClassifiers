@@ -1,0 +1,105 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    5-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+polyuria = 0
+|   polydipsia = 0
+|   |   gender = Male
+|   |   |   irritability = 0
+|   |   |   |   delayed_healing = 0: 0 (97.0/2.0)
+|   |   |   |   delayed_healing = 1
+|   |   |   |   |   age <= 40: 1 (3.0)
+|   |   |   |   |   age > 40: 0 (53.0/1.0)
+|   |   |   irritability = 1
+|   |   |   |   genital_thrush = 0
+|   |   |   |   |   age <= 42: 1 (3.0/1.0)
+|   |   |   |   |   age > 42: 0 (10.0)
+|   |   |   |   genital_thrush = 1: 1 (5.0)
+|   |   gender = Female
+|   |   |   alopecia = 0
+|   |   |   |   visual_blurring = 0
+|   |   |   |   |   age <= 34: 0 (5.0)
+|   |   |   |   |   age > 34: 1 (16.0/1.0)
+|   |   |   |   visual_blurring = 1: 1 (16.0)
+|   |   |   alopecia = 1: 0 (14.0/1.0)
+|   polydipsia = 1
+|   |   irritability = 0
+|   |   |   itching = 0: 1 (6.0)
+|   |   |   itching = 1
+|   |   |   |   gender = Male
+|   |   |   |   |   alopecia = 0: 0 (7.0)
+|   |   |   |   |   alopecia = 1: 1 (5.0/1.0)
+|   |   |   |   gender = Female: 1 (4.0)
+|   |   irritability = 1: 1 (18.0)
+polyuria = 1
+|   polydipsia = 0
+|   |   itching = 0: 1 (30.0)
+|   |   itching = 1
+|   |   |   delayed_healing = 0: 1 (11.0)
+|   |   |   delayed_healing = 1
+|   |   |   |   alopecia = 0: 1 (5.0)
+|   |   |   |   alopecia = 1
+|   |   |   |   |   gender = Male
+|   |   |   |   |   |   age <= 42: 1 (2.0)
+|   |   |   |   |   |   age > 42: 0 (15.0)
+|   |   |   |   |   gender = Female: 1 (2.0)
+|   polydipsia = 1: 1 (193.0)
+
+Number of Leaves  : 	22
+
+Size of the tree : 	43
+
+
+Time taken to build model: 0.03 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         491               94.4231 %
+Incorrectly Classified Instances        29                5.5769 %
+Kappa statistic                          0.883 
+Mean absolute error                      0.0771
+Root mean squared error                  0.2325
+Relative absolute error                 16.2805 %
+Root relative squared error             47.7832 %
+Total Number of Instances              520     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,945    0,056    0,913      0,945    0,929      0,883    0,944     0,866     0
+                 0,944    0,055    0,965      0,944    0,954      0,883    0,944     0,960     1
+Weighted Avg.    0,944    0,055    0,945      0,944    0,944      0,883    0,944     0,924     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 189  11 |   a = 0
+  18 302 |   b = 1
+

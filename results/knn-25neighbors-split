@@ -1,0 +1,61 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 25 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     diabetes_data-weka.filters.unsupervised.attribute.NumericToNominal-R2-last
+Instances:    520
+Attributes:   17
+              age
+              gender
+              polyuria
+              polydipsia
+              sudden_weight_loss
+              weakness
+              polyphagia
+              genital_thrush
+              visual_blurring
+              itching
+              irritability
+              delayed_healing
+              partial_paresis
+              muscle_stiffness
+              alopecia
+              obesity
+              class
+Test mode:    split 66.0% train, remainder test
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 25 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0 seconds
+
+=== Evaluation on test split ===
+
+Time taken to test model on test split: 0.02 seconds
+
+=== Summary ===
+
+Correctly Classified Instances         156               88.1356 %
+Incorrectly Classified Instances        21               11.8644 %
+Kappa statistic                          0.7565
+Mean absolute error                      0.1718
+Root mean squared error                  0.3089
+Relative absolute error                 36.4736 %
+Root relative squared error             64.3634 %
+Total Number of Instances              177     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,984    0,174    0,753      0,984    0,853      0,776    0,956     0,910     0
+                 0,826    0,016    0,990      0,826    0,900      0,776    0,956     0,978     1
+Weighted Avg.    0,881    0,071    0,907      0,881    0,884      0,776    0,956     0,954     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 61  1 |  a = 0
+ 20 95 |  b = 1
+
