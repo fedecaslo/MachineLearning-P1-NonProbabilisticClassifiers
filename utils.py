@@ -4,11 +4,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-
-
 pd.set_option('future.no_silent_downcasting', True)
 
 def clean_data(df):
@@ -21,7 +19,7 @@ def split_data(df):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     return X_train, X_test, y_train, y_test
 
-def evaluate_model(model, X_test, y_test, plot_roc=False):
+def evaluate_model(model, X_test, y_test, plot_roc=False, plot_confusion_matrix=False):
     y_pred = model.predict(X_test)
     y_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else np.zeros_like(y_pred)
     
@@ -45,31 +43,38 @@ def evaluate_model(model, X_test, y_test, plot_roc=False):
         plt.title('Receiver Operating Characteristic')
         plt.legend(loc="lower right")
         plt.show()
+
+    if plot_confusion_matrix:
+        cm = confusion_matrix(y_test, y_pred, labels=model.classes_)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                                      display_labels=model.classes_)
+        disp.plot()
+        plt.show()
     
     return metrics
 
-def train_and_evaluate_knn(X_train, y_train, X_test, y_test, n_neighbors=5, plot_roc=False):
+def execute_knn(X_train, y_train, X_test, y_test, n_neighbors=5, plot_roc=False, plot_confusion_matrix=False):
     model = KNeighborsClassifier(n_neighbors=n_neighbors)
     model.fit(X_train, y_train)
-    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc)
+    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
-def train_and_evaluate_neural_network(X_train, y_train, X_test, y_test, hidden_layer_sizes=(100,), max_iter=200, plot_roc=False):
+def execute_neural_network(X_train, y_train, X_test, y_test, hidden_layer_sizes=(50,), max_iter=200, plot_roc=False, plot_confusion_matrix=False):
     model = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, max_iter=max_iter, random_state=42)
     model.fit(X_train, y_train)
-    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc)
+    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
-def train_and_evaluate_svm(X_train, y_train, X_test, y_test, C=1.0, kernel='linear', plot_roc=False):
+def execute_svm(X_train, y_train, X_test, y_test, C=1.0, kernel='linear', plot_roc=False, plot_confusion_matrix=False):
     model = SVC(C=C, kernel=kernel, probability=True)
     model.fit(X_train, y_train)
-    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc)
+    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
-def train_and_evaluate_decision_tree(X_train, y_train, X_test, y_test, max_depth=None, plot_roc=False):
+def execute_decision_tree(X_train, y_train, X_test, y_test, max_depth=None, plot_roc=False, plot_confusion_matrix=False):
     model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
     model.fit(X_train, y_train)
-    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc)
+    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
 def plot_decision_tree(model, feature_names):
@@ -78,22 +83,22 @@ def plot_decision_tree(model, feature_names):
         plot_tree(model, feature_names=feature_names, filled=True, rounded=True, class_names=True)
         plt.show()
 
-def apply_classifiers(X_train, y_train, X_test, y_test, plot_roc=False):
+def apply_classifiers(X_train, y_train, X_test, y_test, plot_roc=False, plot_confusion_matrix=False):
     results = []
     
-    knn_model, knn_metrics = train_and_evaluate_knn(X_train, y_train, X_test, y_test, plot_roc=plot_roc)
+    knn_model, knn_metrics = execute_knn(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     knn_metrics['Model'] = 'KNeighborsClassifier'
     results.append(knn_metrics)
     
-    svm_model, svm_metrics = train_and_evaluate_svm(X_train, y_train, X_test, y_test, plot_roc=plot_roc)
+    svm_model, svm_metrics = execute_svm(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     svm_metrics['Model'] = 'SVC'
     results.append(svm_metrics)
     
-    nn_model, nn_metrics = train_and_evaluate_neural_network(X_train, y_train, X_test, y_test, plot_roc=plot_roc)
+    nn_model, nn_metrics = execute_neural_network(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     nn_metrics['Model'] = 'MLPClassifier'
     results.append(nn_metrics)
     
-    tree_model, tree_metrics = train_and_evaluate_decision_tree(X_train, y_train, X_test, y_test, plot_roc=plot_roc)
+    tree_model, tree_metrics = execute_decision_tree(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     tree_metrics['Model'] = 'DecisionTreeClassifier'
     results.append(tree_metrics)
     
