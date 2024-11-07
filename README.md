@@ -3,10 +3,15 @@
 
 This repository contains all the code from the development of the project.
 
-To run the notebooks, just type:
+To run the notebooks, just type on the terminal:
+```console
+$ python -m venv env
+```
 
-source env/bin/activate
-
+```console
+$ source env/bin/activate
+```
 Then
-
-pip -r requirements.txt
+```console
+$ (env) pip -r requirements.txt
+```
