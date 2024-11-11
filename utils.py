@@ -8,6 +8,13 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 pd.set_option('future.no_silent_downcasting', True)
+import wittgenstein as lw
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+from sklearn.naive_bayes import GaussianNB, BernoulliNB
+from sklearn.ensemble import StackingClassifier, BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
+
 
 def clean_data(df):
     df['gender'] = df['gender'].replace({'Male':0, 'Female':1})
@@ -59,8 +66,8 @@ def execute_knn(X_train, y_train, X_test, y_test, n_neighbors=5, plot_roc=False,
     metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
-def execute_neural_network(X_train, y_train, X_test, y_test, hidden_layer_sizes=(50,), max_iter=200, plot_roc=False, plot_confusion_matrix=False):
-    model = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, max_iter=max_iter, random_state=42)
+def execute_neural_network(X_train, y_train, X_test, y_test, hidden_layer_sizes=(12,), max_iter=200, learning_rate_init=0.01, plot_roc=False, plot_confusion_matrix=False):
+    model = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, max_iter=max_iter, random_state=42, learning_rate_init=learning_rate_init)
     model.fit(X_train, y_train)
     metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
@@ -77,6 +84,12 @@ def execute_decision_tree(X_train, y_train, X_test, y_test, max_depth=None, plot
     metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     return model, metrics
 
+def execute_ripper(X_train, y_train, X_test, y_test, plot_roc=False, plot_confusion_matrix=False):
+    model = lw.RIPPER() 
+    model.fit(X_train, y_train)
+    metrics = evaluate_model(model, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
+    return model, metrics
+    
 def plot_decision_tree(model, feature_names):
     if isinstance(model, DecisionTreeClassifier):
         plt.figure(figsize=(20, 10))
@@ -101,6 +114,11 @@ def apply_classifiers(X_train, y_train, X_test, y_test, plot_roc=False, plot_con
     tree_model, tree_metrics = execute_decision_tree(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
     tree_metrics['Model'] = 'DecisionTreeClassifier'
     results.append(tree_metrics)
+ 
+    ripper_model, ripper_metrics = execute_ripper(X_train, y_train, X_test, y_test, plot_roc=plot_roc, plot_confusion_matrix=plot_confusion_matrix)
+    ripper_metrics['Model'] = 'Ripper'
+    results.append(ripper_metrics)
+    print(ripper_model.ruleset_)
     
     results_df = pd.DataFrame(results)
     return results_df
@@ -108,3 +126,65 @@ def apply_classifiers(X_train, y_train, X_test, y_test, plot_roc=False, plot_con
 
 def df_to_tex(df):
     print(df.set_index('Model').reset_index().to_latex(float_format="{:.2f}".format))
+
+
+def apply_classifiers_prob(X_train, y_train, X_test, y_test, plot_roc=False, plot_confusion_matrix=False):
+    results = []
+
+    lr_model = LogisticRegression(max_iter=200, random_state=42)
+    lr_model.fit(X_train, y_train)
+    lr_metrics = evaluate_model(lr_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    lr_metrics['Model'] = 'LogisticRegression'
+    results.append(lr_metrics)
+
+    lda_model = LinearDiscriminantAnalysis()
+    lda_model.fit(X_train, y_train)
+    lda_metrics = evaluate_model(lda_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    lda_metrics['Model'] = 'LinearDiscriminantAnalysis'
+    results.append(lda_metrics)
+
+    
+    qda_model = QuadraticDiscriminantAnalysis()
+    qda_model.fit(X_train, y_train)
+    qda_metrics = evaluate_model(qda_model, X_test, y_test, False, False)
+    qda_metrics['Model'] = 'QuadraticDiscriminantAnalysis'
+    results.append(qda_metrics)
+
+    nb_model = BernoulliNB()
+    nb_model.fit(X_train, y_train)
+    nb_metrics = evaluate_model(nb_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    nb_metrics['Model'] = 'BernoulliNB'
+    results.append(nb_metrics)
+
+    base_learners = [
+        ('lr', LogisticRegression(max_iter=200, random_state=42)),
+        ('svm', SVC(probability=True, random_state=42)),
+        ('dt', DecisionTreeClassifier(random_state=42))
+    ]
+    stack_model = StackingClassifier(estimators=base_learners, final_estimator=LogisticRegression())
+    stack_model.fit(X_train, y_train)
+    stack_metrics = evaluate_model(stack_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    stack_metrics['Model'] = 'StackingClassifier'
+    results.append(stack_metrics)
+
+    bag_model = BaggingClassifier(estimator=DecisionTreeClassifier(random_state=42), random_state=42)
+    bag_model.fit(X_train, y_train)
+    bag_metrics = evaluate_model(bag_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    bag_metrics['Model'] = 'BaggingClassifier'
+    results.append(bag_metrics)
+
+    boost_model = AdaBoostClassifier(estimator=DecisionTreeClassifier(max_depth=3), random_state=42)
+    boost_model.fit(X_train, y_train)
+    boost_metrics = evaluate_model(boost_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    boost_metrics['Model'] = 'AdaBoostClassifier'
+    results.append(boost_metrics)
+
+    rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    rf_model.fit(X_train, y_train)
+    rf_metrics = evaluate_model(rf_model, X_test, y_test, plot_roc, plot_confusion_matrix)
+    rf_metrics['Model'] = 'RandomForestClassifier'
+    results.append(rf_metrics)
+
+
+    results_df = pd.DataFrame(results)
+    return results_df
